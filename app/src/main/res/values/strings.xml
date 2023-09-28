@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Fahrenheit&amp;Celsius</string>
+    <string name="FBar">SeekBar</string>
+</resources>
