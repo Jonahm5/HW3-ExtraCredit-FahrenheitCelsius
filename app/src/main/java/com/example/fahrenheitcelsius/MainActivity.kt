@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.annotation.VisibleForTesting
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         Fbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean){
-                val celsiusValue = ((progress - 32) * 5.0/9.0)
+                val celsiusValue = FahrentoC(progress)
 
                     Cbar.progress = celsiusValue.toInt()
                     CCounting.text = "%.2f".format(celsiusValue)
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         Cbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean){
-                val fahrenheitValue = ((progress * 9.0/5.0) + 32)
+                val fahrenheitValue = CelsitoF(progress)
                 Fbar.progress = fahrenheitValue.toInt()
                 FCounting.text = "%.2f".format(fahrenheitValue.toDouble())
                 CCounting.text = "%.2f".format(progress.toDouble())
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
-    private fun checkTemperature(celsiusValue: Double){
+    fun checkTemperature(celsiusValue: Double){
         // For some reason this is still going off for any value <5.
         if (celsiusValue <= 20){
             showSnackbarCold()
@@ -73,5 +74,12 @@ class MainActivity : AppCompatActivity() {
     }
     private fun showSnackbarHot() {
         Snackbar.make(findViewById(android.R.id.content), "I wish it were colder", Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun FahrentoC(Progress: Int): Double {
+        return ((Progress - 32) * 5.0/9.0)
+    }
+    fun CelsitoF(Progress: Int): Double {
+        return ((Progress * 9.0/5.0) + 32)
     }
 }
